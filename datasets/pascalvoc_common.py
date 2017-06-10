@@ -45,6 +45,11 @@ VOC_LABELS = {
     'tvmonitor': (20, 'Indoor'),
 }
 
+EVENT_LABELS = {
+    'none': (0, 'Background'),
+    'ar': (1, 'AR')
+}
+
 
 def get_split(split_name, dataset_dir, file_pattern, reader,
               split_to_sizes, items_to_descriptions, num_classes):
