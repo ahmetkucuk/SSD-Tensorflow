@@ -94,7 +94,7 @@ def _process_image(filename, bboxes, labels):
     truncated = []
     new_bboxes = []
     for bbox in bboxes:
-        new_bbox = [b / 512 for b in bbox]
+        new_bbox = [b / 4096 for b in bbox]
         new_bboxes.append(new_bbox)
 
     for label in labels:
