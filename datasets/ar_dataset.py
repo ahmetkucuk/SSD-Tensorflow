@@ -86,7 +86,7 @@ def get_data_pipeline(data_dir):
 # 	coord.request_stop()
 # 	coord.join(threads)
 
-print(read_event_records("/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data"))
+# print(read_event_records("/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data"))
 
 ITEMS_TO_DESCRIPTIONS = {
 	'image': 'A color image of varying height and width.',
