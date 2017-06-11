@@ -12,7 +12,7 @@ DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tfre
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 TRAIN_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
-python train_ssd_network.py \
+python train_event_detection.py \
     --train_dir=${TRAIN_DIR} \
     --dataset_dir=${DATASET_DIR} \
     --dataset_name=event \
