@@ -92,6 +92,7 @@ def _process_image(filename, bboxes, labels):
     labels_text = []
     difficult = []
     truncated = []
+    bboxes = [bbox / 512 for bbox in bboxes]
     for label in labels:
         labels.append(int(EVENT_LABELS[label][0]))
         labels_text.append(label.encode('ascii'))

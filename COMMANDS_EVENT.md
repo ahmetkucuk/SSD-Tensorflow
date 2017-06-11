@@ -9,7 +9,9 @@ python tf_convert_data.py \
     --output_dir=${OUTPUT_DIR}
 
 DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tfrecords/
-TRAIN_DIR=./logs/ssd_512_vgg_3
+
+DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
+TRAIN_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
 python train_ssd_network.py \
     --train_dir=${TRAIN_DIR} \
     --dataset_dir=${DATASET_DIR} \
@@ -22,6 +24,6 @@ python train_ssd_network.py \
     --optimizer=adam \
     --learning_rate=0.001 \
     --learning_rate_decay_factor=0.95 \
-    --batch_size=2
+    --batch_size=32
     
  
