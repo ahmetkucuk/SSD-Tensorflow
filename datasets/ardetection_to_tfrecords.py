@@ -92,13 +92,17 @@ def _process_image(filename, bboxes, labels):
     labels_text = []
     difficult = []
     truncated = []
-    bboxes = [bbox / 512 for bbox in bboxes]
+    new_bboxes = []
+    for bbox in bboxes:
+        new_bbox = [b / 512 for b in bbox]
+        new_bboxes.append(new_bbox)
+
     for label in labels:
         labels.append(int(EVENT_LABELS[label][0]))
         labels_text.append(label.encode('ascii'))
         difficult.append(0)
         truncated.append(0)
-    return image_data, shape, bboxes, labels, labels_text, difficult, truncated
+    return image_data, shape, new_bboxes, labels, labels_text, difficult, truncated
 
 
 def _convert_to_example(image_data, labels, labels_text, bboxes, shape,

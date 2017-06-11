@@ -2,7 +2,7 @@ DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox
 OUTPUT_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tf_records/
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171/
-OUTPUT_DIR=/home/ahmet/workspace/data/full_disk_171_tf_records/
+OUTPUT_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 python tf_convert_data.py \
     --dataset_name=event \
     --dataset_dir=${DATASET_DIR} \
