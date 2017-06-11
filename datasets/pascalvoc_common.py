@@ -47,7 +47,8 @@ VOC_LABELS = {
 
 EVENT_LABELS = {
     'none': (0, 'Background'),
-    'ar': (1, 'AR')
+    'ar': (1, 'AR'),
+    'ch': (2, 'CH'),
 }
 
 

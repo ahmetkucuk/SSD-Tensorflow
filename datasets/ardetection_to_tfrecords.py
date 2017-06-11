@@ -68,7 +68,7 @@ RANDOM_SEED = 4242
 SAMPLES_PER_FILES = 200
 
 
-def _process_image(filename, bboxes):
+def _process_image(filename, bboxes, labels):
     """Process a image and annotation file.
 
     Args:
@@ -82,6 +82,9 @@ def _process_image(filename, bboxes):
     # Read the image file.
     image_data = tf.gfile.FastGFile(filename, 'r').read()
 
+    if len(bboxes) != len(labels):
+        raise ValueError("length of bboxes and labels are not same")
+
     # Read the XML annotation file.
     shape = [512, 512, 1]
     # Find annotations.
@@ -89,8 +92,7 @@ def _process_image(filename, bboxes):
     labels_text = []
     difficult = []
     truncated = []
-    for obj in bboxes:
-        label = "ar"
+    for label in labels:
         labels.append(int(EVENT_LABELS[label][0]))
         labels_text.append(label.encode('ascii'))
         difficult.append(0)
@@ -142,7 +144,7 @@ def _convert_to_example(image_data, labels, labels_text, bboxes, shape,
     return example
 
 
-def _add_to_tfrecord(name, bboxes, tfrecord_writer):
+def _add_to_tfrecord(name, bboxes, labels, tfrecord_writer):
     """Loads data from image and annotations files and add them to a TFRecord.
 
     Args:
@@ -151,14 +153,14 @@ def _add_to_tfrecord(name, bboxes, tfrecord_writer):
       tfrecord_writer: The TFRecord writer to use for writing.
     """
     image_data, shape, bboxes, labels, labels_text, difficult, truncated = \
-        _process_image(name, bboxes)
+        _process_image(name, bboxes, labels)
     example = _convert_to_example(image_data, labels, labels_text,
                                   bboxes, shape, difficult, truncated)
     tfrecord_writer.write(example.SerializeToString())
 
 
 def _get_output_filename(output_dir, name, idx):
-    return '%s/%s_%03d.tfrecord' % (output_dir, name, idx)
+    return os.path.join(output_dir, '%s_%03d.tfrecord' % (name, idx))
 
 
 def run(dataset_dir, output_dir, name='event_train', shuffling=False):
@@ -171,7 +173,7 @@ def run(dataset_dir, output_dir, name='event_train', shuffling=False):
     if not tf.gfile.Exists(dataset_dir):
         tf.gfile.MakeDirs(dataset_dir)
 
-    images, data = read_event_records(dataset_dir)
+    images, data, labels = read_event_records(dataset_dir)
     # Process dataset files.
     i = 0
     fidx = 0
@@ -185,7 +187,7 @@ def run(dataset_dir, output_dir, name='event_train', shuffling=False):
                 sys.stdout.flush()
 
                 image = images[i]
-                _add_to_tfrecord(image, data[i], tfrecord_writer)
+                _add_to_tfrecord(image, data[i], labels[i], tfrecord_writer)
                 i += 1
                 j += 1
             fidx += 1
@@ -194,5 +196,3 @@ def run(dataset_dir, output_dir, name='event_train', shuffling=False):
     # labels_to_class_names = dict(zip(range(len(_CLASS_NAMES)), _CLASS_NAMES))
     # dataset_utils.write_label_file(labels_to_class_names, dataset_dir)
     print('\nFinished converting the Pascal VOC dataset!')
-
-run("/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data", "/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tfrecords/")
