@@ -51,7 +51,9 @@ def main(_):
     print('Dataset directory:', FLAGS.dataset_dir)
     print('Output directory:', FLAGS.output_dir)
 
-    if FLAGS.dataset_name == 'event':
+    if FLAGS.dataset_name == 'event_train':
+        ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir)
+    elif FLAGS.dataset_name == 'event_test':
         ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir)
     elif FLAGS.dataset_name == 'pascalvoc':
         pascalvoc_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir, FLAGS.output_name)

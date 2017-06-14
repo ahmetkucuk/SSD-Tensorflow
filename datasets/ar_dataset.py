@@ -7,45 +7,6 @@ from datasets import dataset_utils
 slim = tf.contrib.slim
 
 
-def read_event_records(path_to_records):
-
-	images = []
-	data = []
-	labels = []
-	bbox_map = {}
-	label_map = {}
-	with open(os.path.join(path_to_records, "event_records.txt"), "r") as f:
-
-		for l in f.readlines():
-			l = l.replace("\n", "")
-			tuples = l.split("\t")
-			label = 0
-			if tuples[1] == "AR":
-				label = "ar"
-			elif tuples[1] == "CH":
-				label = "ch"
-			else:
-				continue
-
-			bbox = tuples[4]
-			bbox = [int(math.floor(float(i))) for i in bbox.split("-")]
-			temp = bbox[1]
-			bbox[1] = bbox[3]
-			bbox[3] = temp
-			image_name = os.path.join(path_to_records, tuples[5] + "_171.jpg")
-			if not image_name in bbox_map.keys():
-				bbox_map[image_name] = [bbox]
-				label_map[image_name] = [label]
-			else:
-				bbox_map[image_name].append(bbox)
-				label_map[image_name].append(label)
-	for image in bbox_map.keys():
-		images.append(image)
-		data.append(bbox_map[image])
-		labels.append(label_map[image])
-	return images, data, labels
-
-
 def get_data_pipeline(data_dir):
 
 	images, data = read_event_records(data_dir)

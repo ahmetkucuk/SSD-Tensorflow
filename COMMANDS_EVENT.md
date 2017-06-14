@@ -25,5 +25,16 @@ python train_event_detection.py \
     --learning_rate=0.001 \
     --learning_rate_decay_factor=0.95 \
     --batch_size=32
-    
- 
+
+DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
+EVAL_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
+CHECKPOINT_PATH=/home/ahmet/workspace/tensorboard/detection_ssd/model.ckpt-9026.data-00000-of-00001
+python eval_ssd_network.py \
+    --eval_dir=${EVAL_DIR} \
+    --dataset_dir=${DATASET_DIR} \
+    --dataset_name=event \
+    --dataset_split_name=test \
+    --model_name=ssd_512_vgg \
+    --checkpoint_path=${CHECKPOINT_PATH} \
+    --batch_size=1 \
+    --max_num_batches=10

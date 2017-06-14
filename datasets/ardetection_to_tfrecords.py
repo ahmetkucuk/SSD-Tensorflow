@@ -53,11 +53,8 @@ import random
 import numpy as np
 import tensorflow as tf
 
-import xml.etree.ElementTree as ET
-
 from datasets.dataset_utils import int64_feature, float_feature, bytes_feature
 from datasets.pascalvoc_common import EVENT_LABELS
-from ar_dataset import read_event_records
 
 # Original dataset organisation.
 DIRECTORY_ANNOTATIONS = 'Annotations/'
@@ -65,7 +62,57 @@ DIRECTORY_IMAGES = 'JPEGImages/'
 
 # TFRecords convertion parameters.
 RANDOM_SEED = 4242
-SAMPLES_PER_FILES = 200
+SAMPLES_PER_FILES = 1000
+
+
+def read_event_records(path_to_records, dataset_type):
+
+    images = []
+    data = []
+    labels = []
+    bbox_map = {}
+    label_map = {}
+    with open(os.path.join(path_to_records, "event_records.txt"), "r") as f:
+
+        for l in f.readlines():
+            l = l.replace("\n", "")
+            tuples = l.split("\t")
+
+            start_time = tuples[2]
+            start_year = start_time[:5]
+
+            if dataset_type == "event_train":
+                if start_year == "2015":
+                    continue
+            elif dataset_type == "event_test":
+                if start_year != "2015":
+                    continue
+
+            label = 0
+            if tuples[1] == "AR":
+                label = "ar"
+            elif tuples[1] == "CH":
+                label = "ch"
+            else:
+                continue
+
+            bbox = tuples[4]
+            bbox = [int(math.floor(float(i))) for i in bbox.split("-")]
+            temp = bbox[1]
+            bbox[1] = bbox[3]
+            bbox[3] = temp
+            image_name = os.path.join(path_to_records, tuples[5] + "_171.jpg")
+            if not image_name in bbox_map.keys():
+                bbox_map[image_name] = [bbox]
+                label_map[image_name] = [label]
+            else:
+                bbox_map[image_name].append(bbox)
+                label_map[image_name].append(label)
+    for image in bbox_map.keys():
+        images.append(image)
+        data.append(bbox_map[image])
+        labels.append(label_map[image])
+    return images, data, labels
 
 
 def _process_image(filename, bboxes, labels):
@@ -178,7 +225,7 @@ def run(dataset_dir, output_dir, name='event_train', shuffling=False):
     if not tf.gfile.Exists(dataset_dir):
         tf.gfile.MakeDirs(dataset_dir)
 
-    images, data, labels = read_event_records(dataset_dir)
+    images, data, labels = read_event_records(dataset_dir, dataset_type=name)
     # Process dataset files.
     i = 0
     fidx = 0
