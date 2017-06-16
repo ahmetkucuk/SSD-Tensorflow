@@ -52,6 +52,7 @@ import random
 
 import numpy as np
 import tensorflow as tf
+import math
 
 from datasets.dataset_utils import int64_feature, float_feature, bytes_feature
 from datasets.pascalvoc_common import EVENT_LABELS

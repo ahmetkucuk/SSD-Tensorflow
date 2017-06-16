@@ -1,16 +1,17 @@
 export CUDA_VISIBLE_DEVICES="1"
 
 DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data/
-OUTPUT_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tf_records/
+OUTPUT_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tfrecords/
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171/
 OUTPUT_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 python tf_convert_data.py \
-    --dataset_name=event \
+    --dataset_name=event_train \
     --dataset_dir=${DATASET_DIR} \
     --output_dir=${OUTPUT_DIR}
 
 DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tfrecords/
+TRAIN_DIR=/Users/ahmetkucuk/Documents/log_test/
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 TRAIN_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
@@ -26,7 +27,7 @@ python train_event_detection.py \
     --optimizer=adam \
     --learning_rate=0.001 \
     --learning_rate_decay_factor=0.95 \
-    --batch_size=32
+    --batch_size=2
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 EVAL_DIR=/home/ahmet/workspace/tensorboard/detection_ssd

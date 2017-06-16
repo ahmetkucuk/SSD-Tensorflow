@@ -7,48 +7,6 @@ from datasets import dataset_utils
 slim = tf.contrib.slim
 
 
-def get_data_pipeline(data_dir):
-
-	images, data = read_event_records(data_dir)
-	image_queue = tf.train.input_producer(input_tensor=images, shuffle=False)
-	data_queue = tf.PaddingFIFOQueue(capacity=50, dtypes=[tf.int32, tf.int32], shapes=[[None], [5]])
-	# data_queue = tf.QueueBase.from_list(capacity=50, dtypes=[tf.int32, tf.int32], shapes=[[], []])
-	print (data)
-	print(data)
-	data_enqueue_op = data_queue.enqueue_many([data])
-
-	reader = tf.WholeFileReader()
-	key, value = reader.read(image_queue)
-
-	my_img = tf.image.decode_jpeg(value)
-	my_img.set_shape([512, 512, 1])
-
-	batched_images = tf.train.batch([my_img], batch_size=2)
-
-	bboxes = data_queue.dequeue()
-	batched_bboxes = tf.train.batch([bboxes], batch_size=2)
-
-	tf.train.queue_runner.add_queue_runner(
-		tf.train.queue_runner.QueueRunner(data_queue, [data_enqueue_op]*5))
-
-	return batched_images, batched_bboxes
-
-
-# with tf.Session() as sess:
-#
-# 	images, bboxes = get_data_pipeline("/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data")
-# 	sess.run(tf.local_variables_initializer())
-# 	coord = tf.train.Coordinator()
-# 	threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-# 	print(sess.run([images]))
-# 	print(sess.run([bboxes]))
-# 	print(sess.run([bboxes]))
-# 	print(sess.run([bboxes]))
-# 	coord.request_stop()
-# 	coord.join(threads)
-
-# print(read_event_records("/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data"))
-
 ITEMS_TO_DESCRIPTIONS = {
 	'image': 'A color image of varying height and width.',
 	'shape': 'Shape of the image',
@@ -56,17 +14,18 @@ ITEMS_TO_DESCRIPTIONS = {
 	'object/label': 'A list of labels, one per each object.',
 }
 
-TRAIN_STATISTICS = {
-	'none': (0, 0),
-	'ar': (13035, 54796),
-	'ch': (13035, 43081),
-}
+# TRAIN_STATISTICS = {
+# 	'none': (0, 0),
+# 	'ar': (13035, 54796),
+# 	'ch': (13035, 43081),
+# }
 SPLITS_TO_SIZES = {
-	'train': 13035,
+	'train': 9776,
+	'test': 3250,
 }
-SPLITS_TO_STATISTICS = {
-	'train': TRAIN_STATISTICS,
-}
+# SPLITS_TO_STATISTICS = {
+# 	'train': TRAIN_STATISTICS,
+# }
 NUM_CLASSES = 3
 
 def get_split(split_name, dataset_dir, file_pattern, reader):
@@ -111,7 +70,7 @@ def get_split(split_name, dataset_dir, file_pattern, reader):
 		'image/object/bbox/truncated': tf.VarLenFeature(dtype=tf.int64),
 	}
 	items_to_handlers = {
-		'image': slim.tfexample_decoder.Image('image/encoded', 'image/format'),
+		'image': slim.tfexample_decoder.Image('image/encoded', 'image/format', channels=1),
 		'shape': slim.tfexample_decoder.Tensor('image/shape'),
 		'object/bbox': slim.tfexample_decoder.BoundingBox(
 			['ymin', 'xmin', 'ymax', 'xmax'], 'image/object/bbox/'),
