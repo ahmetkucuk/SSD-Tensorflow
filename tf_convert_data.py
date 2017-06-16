@@ -52,9 +52,9 @@ def main(_):
     print('Output directory:', FLAGS.output_dir)
 
     if FLAGS.dataset_name == 'event_train':
-        ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir)
+        ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir, name='event_train')
     elif FLAGS.dataset_name == 'event_test':
-        ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir)
+        ardetection_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir, name='event_test')
     elif FLAGS.dataset_name == 'pascalvoc':
         pascalvoc_to_tfrecords.run(FLAGS.dataset_dir, FLAGS.output_dir, FLAGS.output_name)
     else:

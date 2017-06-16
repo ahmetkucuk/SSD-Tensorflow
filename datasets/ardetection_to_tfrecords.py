@@ -80,7 +80,7 @@ def read_event_records(path_to_records, dataset_type):
             tuples = l.split("\t")
 
             start_time = tuples[2]
-            start_year = start_time[:5]
+            start_year = start_time[:4]
 
             if dataset_type == "event_train":
                 if start_year == "2015":
