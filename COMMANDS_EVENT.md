@@ -1,3 +1,5 @@
+export CUDA_VISIBLE_DEVICES="1"
+
 DATASET_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/Bbox_Data/
 OUTPUT_DIR=/Users/ahmetkucuk/Documents/Research/Solar_Image_Classification/tf_records/
 

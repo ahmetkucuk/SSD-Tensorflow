@@ -75,8 +75,8 @@ class SSDNet(object):
     """
     default_params = SSDParams(
         img_shape=(512, 512),
-        num_classes=21,
-        no_annotation_label=21,
+        num_classes=3,
+        no_annotation_label=3,
         feat_layers=['block4', 'block7', 'block8', 'block9', 'block10', 'block11', 'block12'],
         feat_shapes=[(64, 64), (32, 32), (16, 16), (8, 8), (4, 4), (2, 2), (1, 1)],
         anchor_size_bounds=[0.10, 0.90],

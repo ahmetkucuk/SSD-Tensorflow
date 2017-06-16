@@ -266,7 +266,7 @@ def main(_):
             # Dequeue batch.
             b_image, b_gclasses, b_glocalisations, b_gscores = \
                 tf_utils.reshape_list(batch_queue.dequeue(), batch_shape)
-
+            print(b_image)
             # Construct SSD network.
             arg_scope = ssd_net.arg_scope(weight_decay=FLAGS.weight_decay,
                                           data_format=DATA_FORMAT)
