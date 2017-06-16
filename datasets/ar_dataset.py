@@ -20,8 +20,8 @@ ITEMS_TO_DESCRIPTIONS = {
 # 	'ch': (13035, 43081),
 # }
 SPLITS_TO_SIZES = {
-	'train': 9776,
-	'test': 3250,
+	'train': 10337,
+	'test': 2698,
 }
 # SPLITS_TO_STATISTICS = {
 # 	'train': TRAIN_STATISTICS,
