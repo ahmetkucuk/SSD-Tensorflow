@@ -99,9 +99,7 @@ def read_event_records(path_to_records, dataset_type):
 
             bbox = tuples[4]
             bbox = [int(math.floor(float(i))) for i in bbox.split("-")]
-            temp = bbox[1]
-            bbox[1] = bbox[3]
-            bbox[3] = temp
+            bbox.reverse()
             image_name = os.path.join(path_to_records, tuples[5] + "_171.jpg")
             if not image_name in bbox_map.keys():
                 bbox_map[image_name] = [bbox]

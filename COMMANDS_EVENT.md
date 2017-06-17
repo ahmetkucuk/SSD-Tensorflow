@@ -15,7 +15,7 @@ TRAIN_DIR=/Users/ahmetkucuk/Documents/log_test/
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 TRAIN_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
-python train_event_detection.py \
+nohup python train_event_detection.py \
     --train_dir=${TRAIN_DIR} \
     --dataset_dir=${DATASET_DIR} \
     --dataset_name=event \
@@ -27,7 +27,7 @@ python train_event_detection.py \
     --optimizer=adam \
     --learning_rate=0.001 \
     --learning_rate_decay_factor=0.95 \
-    --batch_size=2
+    --batch_size=20 > output.txt 2>&1 &
 
 DATASET_DIR=/home/ahmet/workspace/data/full_disk_171_tfrecords/
 EVAL_DIR=/home/ahmet/workspace/tensorboard/detection_ssd
